@@ -1,0 +1,13 @@
+{
+  "name": "workflows",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "workspaces": [
+    "core",
+    "plugins",
+    "api"
+  ],
+  "author": "georgeobiero2@gmail.com",
+  "license": "ISC"
+}
