@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "keywords": [],
+  "dependencies": {
+    "@workflows/plugins": "1.0.0"
+  },
   "author": "",
   "license": "ISC"
 }
