@@ -1,4 +1,8 @@
-import { MicroKernel } from '../core/MicroKernel';
+import { MicroKernel } from '../core';
 import { RestAPIAdapter } from './rest/RestAPIAdapter';
-const rest = new RestAPIAdapter();
-rest.callService('aol');
+
+const kernel = new MicroKernel();
+
+const rest = new RestAPIAdapter(kernel);
+const service = rest.callService('aol');
+rest.createRequest(service);
