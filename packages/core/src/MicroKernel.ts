@@ -61,13 +61,12 @@ export abstract class Plugin {
 export class MicroKernel {
   private readonly plugins: Plugin[];
 
-  constructor() {
-    this.plugins = this.subscribe();
+  constructor(factory: PluginFactory) {
+    this.plugins = this.subscribe(factory);
   }
   // make list of plugins private field so that we
   // can only query once
-  subscribe(): Plugin[] {
-    const factory = new PluginFactory();
+  subscribe(factory: PluginFactory): Plugin[] {
     const plugins: Plugin[] = factory.getPlugins();
 
     for (const plugin of plugins) {

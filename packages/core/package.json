@@ -6,7 +6,6 @@
   "typings": "dist/index.d.ts",
   "keywords": [],
   "dependencies": {
-    "@workflows/plugins": "1.0.0",
     "events": "^3.0.0",
     "@types/events": "^3.0.0"
   },
