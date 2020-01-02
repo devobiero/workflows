@@ -1,14 +1,17 @@
 // import { Plugin } from '@workflows/core';
 // todo: load from package
-import { Plugin } from '../../core';
+import { EventManager, Plugin } from '../../core';
 
 export class WelcomePlugin implements Plugin {
   load(): void {
     console.log('load from welcome plugin');
+    EventManager.subscribe('aol', () => {
+      this.execute();
+    });
   }
 
-  run(): void {
-    console.log('run from welcome plugin');
+  execute(): void {
+    console.log('execute event on welcome plugin');
   }
 
   unload(): void {}

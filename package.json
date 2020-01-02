@@ -4,10 +4,9 @@
   "private": true,
   "description": "",
   "workspaces": [
-    "core",
-    "plugins",
-    "api"
+    "packages/*"
   ],
   "author": "georgeobiero2@gmail.com",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }
