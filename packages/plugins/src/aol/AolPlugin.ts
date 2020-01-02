@@ -1,4 +1,4 @@
-import { EventManager, Events, Plugin } from '../../core';
+import { EventManager, Events, Plugin } from '@workflows/core';
 export class AolPlugin implements Plugin {
   load(): void {
     console.log('load from aol plugin');

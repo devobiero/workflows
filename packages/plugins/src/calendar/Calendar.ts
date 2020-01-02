@@ -1,6 +1,4 @@
-// import { Plugin } from '@workflows/core';
-// todo: load from package
-import { EventManager, Events, Plugin } from '../../core';
+import { EventManager, Events, Plugin } from '@workflows/core';
 
 export class Calendar implements Plugin {
   load(): void {

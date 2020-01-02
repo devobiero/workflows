@@ -1,5 +1,5 @@
-import { PluginManager } from '../core';
-import { Request } from '../core/shared';
+import { Request } from '@workflows/core';
+import { PluginManager } from '@workflows/core';
 
 export interface Adapter {
   callService(name: string): PluginManager | undefined;

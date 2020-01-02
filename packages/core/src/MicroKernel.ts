@@ -1,4 +1,3 @@
-// @ts-ignore
 import { EventEmitter } from 'events';
 import { capitalize, Events, Request } from './index';
 import { PluginFactory } from './PluginFactory';
@@ -14,7 +13,7 @@ export class EventManager {
       EventManager.instance = new EventEmitter();
     }
 
-    return EventManager.instance;
+    return EventManager.instance as EventEmitter;
   }
 
   static subscribe(message: Events, callback: () => void) {
@@ -96,12 +95,12 @@ export class MicroKernel {
    * so event listeners (plugins) can register on specific events without
    * having to listen to each single event thrown by the core.
    */
-  emit(data: string | undefined): void {
+  emit(data: string | number): void {
     EventManager.getInstance().emit(data);
   }
 
   // call some of internal facing server/plugin e.g logger
   callInternalServer(): void {
-    console.log('calling database server')
+    console.log('calling database server');
   }
 }

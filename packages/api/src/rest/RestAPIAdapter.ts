@@ -1,5 +1,5 @@
-import { MicroKernel, PluginManager } from '../../core';
-import { Request } from '../../core';
+import { MicroKernel, PluginManager } from '@workflows/core';
+import { Request } from '@workflows/core';
 import { Adapter } from '../Adapter';
 
 export class RestAPIAdapter implements Adapter {
