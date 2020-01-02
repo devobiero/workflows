@@ -1,3 +1,2 @@
-// export plugins here
-// export configuration file here
-// maybe version
+export * from './aol/AolPlugin';
+export * from './calendar/Calendar';

@@ -1,15 +1,15 @@
-import { EventManager, Plugin } from '../../core';
+import { EventManager, Events, Plugin } from '../../core';
 export class AolPlugin implements Plugin {
   load(): void {
     console.log('load from aol plugin');
-    EventManager.subscribe('welcome', () => {
-      this.execute();
+    EventManager.subscribe(Events.Calendar, () => {
+      console.log('AOL function from event');
     });
   }
 
-  execute(): void {
+  run(): void {
     console.log('executing event on aol plugin');
-    EventManager.publish('aol')
+    EventManager.publish(Events.Aol);
   }
 
   unload(): void {

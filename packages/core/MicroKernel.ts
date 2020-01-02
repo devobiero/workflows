@@ -1,7 +1,7 @@
 // @ts-ignore
 import { EventEmitter } from 'events';
+import { capitalize, Events, Request } from './index';
 import { PluginFactory } from './PluginFactory';
-import { capitalize } from './shared/utils';
 
 // singleton EventManager class
 export class EventManager {
@@ -17,11 +17,11 @@ export class EventManager {
     return EventManager.instance;
   }
 
-  static subscribe(message: string, callback: () => void) {
+  static subscribe(message: Events, callback: () => void) {
     this.getInstance().on(message, callback);
   }
 
-  static publish(message: string) {
+  static publish(message: Events) {
     this.getInstance().emit(message);
   }
 }
@@ -35,9 +35,12 @@ export class PluginManager {
     this.plugin = plugin;
   }
 
-  executeRequest(): void {
-    // this.kernel.runAll();
-    this.kernel.emit('welcome');
+  executeRequest(request: Request): void {
+    if (request.body?.event) {
+      this.kernel.emit(request.body?.event);
+    }
+    this.plugin.run();
+    this.kernel.callInternalServer();
     // call other internal servers e.g loggers, database analytics
   }
 
@@ -46,9 +49,9 @@ export class PluginManager {
 
 export abstract class Plugin {
   // handles any in-house stuff before making it active
-  // e.g notifying users of it's existence
+  // e.g notifying users of it's existence, subscribing to events
   abstract load(): void;
-  abstract execute(): void;
+  abstract run(): void;
   // handles any house cleaning duties
   // e.g cleaning up resources
   abstract unload(): void;
@@ -98,5 +101,7 @@ export class MicroKernel {
   }
 
   // call some of internal facing server/plugin e.g logger
-  callInternalServer(): void {}
+  callInternalServer(): void {
+    console.log('calling database server')
+  }
 }

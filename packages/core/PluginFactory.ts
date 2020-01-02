@@ -1,5 +1,5 @@
-import { AolPlugin } from '../plugins/aol/AolPlugin';
-import { WelcomePlugin } from '../plugins/welcome/WelcomePlugin';
+import { AolPlugin } from '../plugins';
+import { Calendar } from '../plugins';
 import { Plugin } from './MicroKernel';
 
 export class PluginFactory {
@@ -15,7 +15,7 @@ export class PluginFactory {
 
   public getPlugins(): Plugin[] {
     // todo plugins should be loaded from configuration files
-    this.install(new WelcomePlugin());
+    this.install(new Calendar());
     this.install(new AolPlugin());
     return this.plugins;
   }

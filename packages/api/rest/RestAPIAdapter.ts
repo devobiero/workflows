@@ -1,4 +1,5 @@
 import { MicroKernel, PluginManager } from '../../core';
+import { Request } from '../../core';
 import { Adapter } from '../Adapter';
 
 export class RestAPIAdapter implements Adapter {
@@ -12,7 +13,7 @@ export class RestAPIAdapter implements Adapter {
     return this.kernel.findReceiver(name);
   }
 
-  createRequest(service: PluginManager | undefined): void {
-    service?.executeRequest();
+  createRequest(request: Request, service: PluginManager | undefined): void {
+    service?.executeRequest(request);
   }
 }
