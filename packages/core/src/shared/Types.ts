@@ -5,7 +5,7 @@ export enum Events {
 
 export interface Request {
   type: string;
-  body: {
-    event?: string
+  body?: {
+    event?: string;
   };
 }

@@ -1,4 +1,4 @@
-export enum Plugin {
-    Calendar = 'Calendar',
-    Aol = 'Aol',
+export enum Service {
+  Calendar = 'Calendar',
+  TODO = 'TODO',
 }

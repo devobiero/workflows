@@ -1,3 +1,3 @@
-export * from './aol/AolPlugin';
+export * from './todoist/Todo';
 export * from './calendar/Calendar';
-export * from './Types'
+export * from './Types';
