@@ -1,6 +1,6 @@
 import { MicroKernel, PluginManager } from '@workflows/core';
 import { Request } from '@workflows/core';
-import { Adapter } from '../Adapter';
+import { Adapter } from './interfaces/Adapter';
 
 export class RestAPIAdapter implements Adapter {
   private kernel: MicroKernel;

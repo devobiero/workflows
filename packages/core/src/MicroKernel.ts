@@ -94,7 +94,7 @@ export class MicroKernel {
    * so event listeners (plugins) can register on specific events without
    * having to listen to each single event thrown by the core.
    */
-  emit(data: string | number): void {
+  emit(data: string | symbol): void {
     EventManager.getInstance().emit(data);
   }
 
