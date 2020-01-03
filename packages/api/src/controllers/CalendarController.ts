@@ -1,8 +1,11 @@
 import { Request, Response, Router } from 'express';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+import { APIAdapter } from '../APIAdapter';
 import { IController } from '../interfaces/IController';
+import { Types } from '../Types';
+import {Events, Request as CoreRequest} from "@workflows/core";
 
-interface Invite {
+export interface Invite {
   id: string;
   name: string;
 }
@@ -11,8 +14,12 @@ interface Invite {
 export class CalendarController implements IController<any> {
   public path: string = '/events';
   public router: any = Router();
+  public adapter: APIAdapter;
 
-  constructor() {
+  constructor(@inject(Types.Adapter) adapter: APIAdapter) {
+    this.adapter = adapter;
+    this.getAllInvites = this.getAllInvites.bind(this);
+    this.getInviteById = this.getInviteById.bind(this);
     this.initRoutes();
   }
 
@@ -34,6 +41,14 @@ export class CalendarController implements IController<any> {
   }
 
   private getAllInvites(_request: Request, response: Response) {
+    const request: CoreRequest = {
+      type: Plugin.name,
+      body: {
+        event: Events.Calendar
+      }
+    };
+    const service = this.adapter.callService('calendar');
+    service?.executeRequest(request);
     const events: Invite[] = [
       {
         id: '1',

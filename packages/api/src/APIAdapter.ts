@@ -1,11 +1,14 @@
 import { MicroKernel, PluginManager } from '@workflows/core';
 import { Request } from '@workflows/core';
+import {inject, injectable} from 'inversify';
 import { Adapter } from './interfaces/Adapter';
+import {Types} from "./Types";
 
-export class RestAPIAdapter implements Adapter {
+@injectable()
+export class APIAdapter implements Adapter {
   private kernel: MicroKernel;
 
-  constructor(kernel: MicroKernel) {
+  constructor(@inject(Types.Kernel) kernel: MicroKernel) {
     this.kernel = kernel;
   }
 
