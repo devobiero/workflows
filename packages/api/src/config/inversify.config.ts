@@ -14,6 +14,7 @@ container
   .to(GenericController);
 
 const factory = new PluginFactory();
+// install plugins programmatically
 factory.install(new Calendar());
 factory.install(new Todo());
 

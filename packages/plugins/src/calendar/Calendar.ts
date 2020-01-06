@@ -1,4 +1,4 @@
-import { EventManager, Plugin } from '@workflows/core';
+import { EventManager as _, Plugin } from '@workflows/core';
 import { Service } from '../Types';
 
 export interface Invite {
@@ -9,7 +9,7 @@ export interface Invite {
 export class Calendar implements Plugin<Invite> {
   load(): void {
     console.log('load from calendar plugin');
-    EventManager.subscribe(Service.TODO, () => {
+    _.subscribe(Service.TODO, () => {
       console.log('function from TODO event');
     });
   }

@@ -5,7 +5,7 @@ import ExpressServer from './ExpressServer';
 import { Types } from './Types';
 
 // load config file
-ProcessConfigLoader.Load('/dist/.env');
+ProcessConfigLoader.Load('.env');
 
 const eventsController = container.get<GenericController>(
   Types.GenericController,

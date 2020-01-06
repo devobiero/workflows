@@ -1,4 +1,4 @@
-export enum Service {
+export const enum Service {
   Calendar = 'Calendar',
   TODO = 'TODO',
 }

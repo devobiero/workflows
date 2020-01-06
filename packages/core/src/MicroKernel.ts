@@ -50,7 +50,7 @@ export abstract class Plugin<T> {
   // handles any in-house stuff before making it active
   // e.g notifying users of it's existence, subscribing to events
   abstract load(): void;
-  abstract run(args: any): T;
+  abstract run(args: any): T | void;
   // handles any house cleaning duties
   // e.g cleaning up resources
   abstract unload(): void;
