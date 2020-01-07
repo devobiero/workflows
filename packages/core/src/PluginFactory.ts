@@ -3,11 +3,17 @@ import { Plugin } from './MicroKernel';
 export class PluginFactory<T> {
   private plugins: Plugin<T>[] = [];
 
-  constructor() {
+  constructor(registeredPlugins: any) {
+    PluginFactory.register(registeredPlugins);
     this.discoverSync();
   }
 
+  private static register(plugins: any) {
+    Object.keys(plugins).forEach(() => {});
+  }
+
   public install(plugin: Plugin<T>) {
+    console.log(`Installing ${plugin.constructor.name} plugin`);
     this.plugins.push(plugin);
   }
 
