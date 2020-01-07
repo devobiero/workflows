@@ -1,40 +1,39 @@
-import { api, EventManager as _, Plugin } from "@workflows/core";
-import { Service } from "../Types";
+import { api, EventManager as _, Plugin } from '@workflows/core';
+import { Service } from '../Types';
 
 export interface Task {
   id: string;
   name: string;
 }
 
-export class Todo implements Plugin<Task> {
+@Plugin.register
+export class Todo {
   load(): void {
-    console.log("load from todo plugin");
+    console.log('load from todo plugin');
     _.subscribe(Service.Calendar, () => {
-      console.log("Todo function from event");
+      console.log('Todo function from event');
     });
   }
 
-  // 2fbb8adfa421cba2f7c53649e37f02f32a86caa1
-  run(args: any): void {
-    const token = "2fbb8adfa421cba2f7c53649e37f02f32a86caa1";
-    api<Task>({
-      url: "https://api.todoist.com/rest/v1/projects",
-      options: {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
-      }
-    })
-      .then(task => {
-        console.log("executing event on todo plugin", args);
-        console.log(task);
-        _.publish(Service.TODO);
-      })
-      .catch(error => console.error(error));
+  async run(args: any): Promise<Task> {
+    console.log('executing event on todo plugin', args);
+    try {
+      return await api<Task>({
+        url: 'https://api.todoist.com/rest/v1/tasks',
+        options: {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.TODO_API_TOKEN}`,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw Error(error);
+    }
   }
 
   unload(): void {
-    console.log("unload from todo plugin");
+    console.log('unload from todo plugin');
   }
 }

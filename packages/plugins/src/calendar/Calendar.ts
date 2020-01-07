@@ -6,7 +6,8 @@ export interface Invite {
   name: string;
 }
 
-export class Calendar implements Plugin<Invite> {
+@Plugin.register
+export class Calendar {
   load(): void {
     console.log('load from calendar plugin');
     _.subscribe(Service.TODO, () => {
@@ -14,7 +15,7 @@ export class Calendar implements Plugin<Invite> {
     });
   }
 
-  run(args: any): Invite {
+  async run(args: any): Promise<Invite> {
     console.log('run main function on calendar plugin', args);
     const events: Invite[] = [
       {

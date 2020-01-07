@@ -20,10 +20,12 @@ export class GenericController implements IController<any> {
     this.router.post(this.path, this.run);
   }
 
-  private run(req: Request, response: Response): Response {
+  private async run(req: Request, response: Response): Promise<Response> {
     const { body, type } = req.body;
+    console.log('body from todoist:');
+    console.log(req.body);
     return response.send(
-      this.adapter.callService(type)?.executeRequest({
+      await this.adapter.callService(type)?.executeRequest({
         type,
         body,
       }),

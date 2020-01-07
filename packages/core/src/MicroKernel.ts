@@ -2,6 +2,22 @@ import { EventEmitter } from 'events';
 import { capitalize, Request } from './index';
 import { PluginFactory } from './PluginFactory';
 
+// add a registry of the type you expect
+export namespace Plugin {
+  interface Constructor<T> {
+    new (...args: any[]): T;
+    readonly prototype: T;
+  }
+  const implementations: Constructor<Plugin<any>>[] = [];
+  export function GetImplementations(): Constructor<Plugin<any>>[] {
+    return implementations;
+  }
+  export function register<T extends Constructor<Plugin<any>>>(ctor: T) {
+    implementations.push(ctor);
+    return ctor;
+  }
+}
+
 // singleton EventManager class
 export class EventManager {
   private static instance: EventManager;
@@ -34,26 +50,26 @@ export class PluginManager {
     this.plugin = plugin;
   }
 
-  executeRequest(request: Request): any {
+  async executeRequest(request: Request): Promise<any> {
     if (request.body?.event) {
       this.kernel.emit(request.body?.event);
     }
     // call other internal servers e.g loggers, database analytics
     this.kernel.callInternalServer(request.body);
-    return this.plugin.run(request.body);
+    return await this.plugin.run(request.body);
   }
 
   receiveRequest(): void {}
 }
 
-export abstract class Plugin<T> {
+export interface Plugin<T> {
   // handles any in-house stuff before making it active
   // e.g notifying users of it's existence, subscribing to events
-  abstract load(): void;
-  abstract run(args: any): T | void;
+  load(): void;
+  run(args: any): Promise<T>;
   // handles any house cleaning duties
   // e.g cleaning up resources
-  abstract unload(): void;
+  unload(): void;
 }
 
 // make it a singleton
