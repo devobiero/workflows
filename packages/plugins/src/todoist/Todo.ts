@@ -1,12 +1,23 @@
-import { api, EventManager as _, Plugin } from '@workflows/core';
+import {
+  api,
+  EventManager as _,
+  EventSignature,
+  Plugin,
+} from '@workflows/core';
 import { Service } from '../Types';
 
 export interface Task {
   id: string;
   name: string;
+  completed: boolean;
+  priority: number;
 }
 
 @Plugin.register
+@Plugin.addEventSignature({
+  eventKeys: ['completed', 'priority'],
+  name: Todo.name,
+} as EventSignature)
 export class Todo {
   load(): void {
     console.log('load from todo plugin');

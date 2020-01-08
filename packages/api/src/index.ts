@@ -1,5 +1,5 @@
-import { ProcessConfigLoader } from './config/env';
 import container from './config/DI';
+import { ProcessConfigLoader } from './config/env';
 import { GenericController } from './controllers/GenericController';
 import ExpressServer from './ExpressServer';
 import { Types } from './Types';

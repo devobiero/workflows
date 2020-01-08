@@ -21,14 +21,10 @@ export class GenericController implements IController<any> {
   }
 
   private async run(req: Request, response: Response): Promise<Response> {
-    const { body, type } = req.body;
-    console.log('body from todoist:');
-    console.log(req.body);
     return response.send(
-      await this.adapter.callService(type)?.executeRequest({
-        type,
-        body,
-      }),
+      await this.adapter
+          .callService(req.body)
+          ?.executeRequest(req.body),
     );
   }
 }

@@ -2,19 +2,39 @@ import { EventEmitter } from 'events';
 import { capitalize, Request } from './index';
 import { PluginFactory } from './PluginFactory';
 
+export interface EventSignature {
+  eventKeys: Array<string>;
+  name: string;
+}
 // add a registry of the type you expect
 export namespace Plugin {
   interface Constructor<T> {
     new (...args: any[]): T;
     readonly prototype: T;
   }
+
   const implementations: Constructor<Plugin<any>>[] = [];
+  const types: Set<any> = new Set<any>();
+
   export function GetImplementations(): Constructor<Plugin<any>>[] {
     return implementations;
   }
+
   export function register<T extends Constructor<Plugin<any>>>(ctor: T) {
     implementations.push(ctor);
     return ctor;
+  }
+
+  export function addEventSignature(type: any) {
+    // @ts-ignore
+    return function(target) {
+      // validate event keys, check if not unique
+      types.add(type);
+    };
+  }
+
+  export function GetTypes() {
+    return [...types];
   }
 }
 
@@ -50,13 +70,14 @@ export class PluginManager {
     this.plugin = plugin;
   }
 
-  async executeRequest(request: Request): Promise<any> {
-    if (request.body?.event) {
-      this.kernel.emit(request.body?.event);
-    }
+  async executeRequest(request: any): Promise<any> {
+    console.log('request is', request);
+    // if (request.body?.event) {
+    //   this.kernel.emit(request.body?.event);
+    // }
     // call other internal servers e.g loggers, database analytics
-    this.kernel.callInternalServer(request.body);
-    return await this.plugin.run(request.body);
+    this.kernel.callInternalServer(request);
+    return await this.plugin.run(request);
   }
 
   receiveRequest(): void {}
@@ -80,6 +101,11 @@ export class MicroKernel {
   constructor(factory: PluginFactory<any>) {
     this.plugins = this.subscribe(factory);
   }
+
+  getPlugins(): Plugin<any>[] {
+    return this.plugins;
+  }
+
   // make list of plugins private field so that we
   // can only query once
   subscribe(factory: PluginFactory<any>): Plugin<any>[] {

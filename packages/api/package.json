@@ -20,6 +20,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "inversify": "^5.0.1",
-    "reflect-metadata": "^0.1.13"
+    "lodash": "^4.17.15",
+    "reflect-metadata": "^0.1.13",
+    "ts-transformer-keys": "^0.4.1"
   }
 }

@@ -1,4 +1,4 @@
-import { EventManager as _, Plugin } from '@workflows/core';
+import { EventManager as _, EventSignature, Plugin } from '@workflows/core';
 import { Service } from '../Types';
 
 export interface Invite {
@@ -7,6 +7,10 @@ export interface Invite {
 }
 
 @Plugin.register
+@Plugin.addEventSignature({
+  eventKeys: ['id', 'name'],
+  name: Calendar.name,
+} as EventSignature)
 export class Calendar {
   load(): void {
     console.log('load from calendar plugin');
