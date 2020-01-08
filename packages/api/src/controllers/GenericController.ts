@@ -22,9 +22,7 @@ export class GenericController implements IController<any> {
 
   private async run(req: Request, response: Response): Promise<Response> {
     return response.send(
-      await this.adapter
-          .callService(req.body)
-          ?.executeRequest(req.body),
+      await this.adapter.callService(req.body)?.executeRequest(req.body),
     );
   }
 }

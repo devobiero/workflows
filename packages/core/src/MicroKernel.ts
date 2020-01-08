@@ -1,12 +1,12 @@
 import { EventEmitter } from 'events';
-import { capitalize, Request } from './index';
+import { capitalize } from './index';
 import { PluginFactory } from './PluginFactory';
 
 export interface EventSignature {
   eventKeys: Array<string>;
   name: string;
 }
-// add a registry of the type you expect
+
 export namespace Plugin {
   interface Constructor<T> {
     new (...args: any[]): T;
@@ -71,7 +71,7 @@ export class PluginManager {
   }
 
   async executeRequest(request: any): Promise<any> {
-    console.log('request is', request);
+    // todo: get events from plugin names
     // if (request.body?.event) {
     //   this.kernel.emit(request.body?.event);
     // }
