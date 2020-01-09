@@ -1,4 +1,4 @@
-import {MicroKernel, Plugin} from '@workflows/core';
+import { MicroKernel, Plugin } from '@workflows/core';
 import { inject, injectable } from 'inversify';
 import _ from 'lodash';
 import { Adapter } from './interfaces/Adapter';
@@ -29,7 +29,7 @@ export class APIAdapter implements Adapter {
   }
 
   emitEvent(name: string, request: any) {
-    console.log(request)
+    console.log(request);
     this.kernel.emit(name);
   }
 }

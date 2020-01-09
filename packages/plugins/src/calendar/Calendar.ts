@@ -1,5 +1,5 @@
 import { EventManager as _, EventSignature, Plugin } from '@workflows/core';
-import {Todo} from "../todoist/Todo";
+import { Todo } from '../todoist/Todo';
 
 export interface Invite {
   id: string;

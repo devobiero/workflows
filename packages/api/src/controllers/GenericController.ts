@@ -22,11 +22,14 @@ export class GenericController implements IController<any> {
 
   private async run(req: Request, response: Response) {
     const handler = this.adapter.callService(req.body);
-    handler.receiver?.executeRequest(req.body).then((data: any) => {
-      this.adapter.emitEvent(handler.name, req);
-      return response.send(data);
-    }).catch((err: string | undefined) => {
-      throw new Error(err);
-    })
+    handler.receiver
+      ?.executeRequest(req.body)
+      .then((data: any) => {
+        this.adapter.emitEvent(handler.name, req);
+        return response.send(data);
+      })
+      .catch((err: string | undefined) => {
+        throw new Error(err);
+      });
   }
 }
