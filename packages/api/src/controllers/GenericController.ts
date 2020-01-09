@@ -20,9 +20,13 @@ export class GenericController implements IController<any> {
     this.router.post(this.path, this.run);
   }
 
-  private async run(req: Request, response: Response): Promise<Response> {
-    return response.send(
-      await this.adapter.callService(req.body)?.executeRequest(req.body),
-    );
+  private async run(req: Request, response: Response) {
+    const handler = this.adapter.callService(req.body);
+    handler.receiver?.executeRequest(req.body).then((data: any) => {
+      this.adapter.emitEvent(handler.name, req);
+      return response.send(data);
+    }).catch((err: string | undefined) => {
+      throw new Error(err);
+    })
   }
 }

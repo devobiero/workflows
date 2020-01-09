@@ -1,4 +1,4 @@
-import { MicroKernel, Plugin, PluginManager } from '@workflows/core';
+import {MicroKernel, Plugin} from '@workflows/core';
 import { inject, injectable } from 'inversify';
 import _ from 'lodash';
 import { Adapter } from './interfaces/Adapter';
@@ -12,16 +12,24 @@ export class APIAdapter implements Adapter {
     this.kernel = kernel;
   }
 
-  callService(event: any): PluginManager | undefined {
+  callService(event: any): any | undefined {
     const types = Plugin.GetTypes();
     for (let i = 0; i < types.length; i++) {
       const name = types[i].name;
       const requiredKeys = types[i].eventKeys;
       if (_.every(requiredKeys, _.partial(_.has, event))) {
-        return this.kernel.findReceiver(name);
+        return {
+          name,
+          receiver: this.kernel.findReceiver(name),
+        };
       }
     }
     console.log(`No plugin manager found for ${JSON.stringify(event)}`);
     return undefined;
+  }
+
+  emitEvent(name: string, request: any) {
+    console.log(request)
+    this.kernel.emit(name);
   }
 }

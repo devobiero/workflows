@@ -71,10 +71,6 @@ export class PluginManager {
   }
 
   async executeRequest(request: any): Promise<any> {
-    // todo: get events from plugin names
-    // if (request.body?.event) {
-    //   this.kernel.emit(request.body?.event);
-    // }
     // call other internal servers e.g loggers, database analytics
     this.kernel.callInternalServer(request);
     return await this.plugin.run(request);
