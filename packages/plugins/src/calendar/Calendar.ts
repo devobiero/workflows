@@ -8,7 +8,7 @@ export interface Invite {
 
 @Plugin.register
 @Plugin.addEventSignature({
-  eventKeys: ['id', 'name'],
+  requiredKeys: ['id', 'name'],
   name: Calendar.name,
 } as EventSignature)
 export class Calendar {

@@ -3,7 +3,7 @@ import { capitalize } from './index';
 import { PluginFactory } from './PluginFactory';
 
 export interface EventSignature {
-  eventKeys: Array<string>;
+  requiredKeys: Array<string>;
   name: string;
 }
 
@@ -52,6 +52,12 @@ export class EventManager {
     return EventManager.instance as EventEmitter;
   }
 
+  /**
+   * Plugin can subscribe to events accordingly and execute the callback function passed
+   * @param eventName is required
+   * @param callbackFunction is required
+   * @constructor
+   */
   static OnEvent(eventName: any, callbackFunction: (...args: any[]) => void) {
     this.getInstance().on(eventName, callbackFunction);
   }
@@ -79,17 +85,22 @@ export class PluginManager {
 }
 
 export interface Plugin<T> {
-  // handles any in-house stuff before making it active
-  // e.g notifying users of it's existence, subscribing to events
+  /**
+   * handles any in-house stuff before making it active
+   * e.g notifying users of it's existence, subscribing to events
+   */
   load(): void;
   run(args: any): Promise<T>;
-  // handles any house cleaning duties
-  // e.g cleaning up resources
+  /**
+   * handles any house cleaning duties e.g cleaning up resources
+   */
   unload(): void;
 }
 
-// make it a singleton
-// we only need one instance running
+/**
+ * A singleton MicroKernel instance the co-ordinates all events received from
+ * the API adapter
+ */
 export class MicroKernel {
   private readonly plugins: Plugin<any>[];
 

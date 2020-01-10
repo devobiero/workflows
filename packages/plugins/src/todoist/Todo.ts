@@ -9,7 +9,7 @@ export interface Task {
 
 @Plugin.register
 @Plugin.addEventSignature({
-  eventKeys: ['completed', 'priority'],
+  requiredKeys: ['completed', 'priority'],
   name: Todo.name,
 } as EventSignature)
 export class Todo {
