@@ -5,6 +5,13 @@ export interface ITask {
   name: string;
   completed: boolean;
   priority: number;
+  projectId: number;
+  created: string;
+  url: string;
+  due?: {
+    recurring: string;
+    date: string
+  }
 }
 
 @IPlugin.register

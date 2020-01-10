@@ -4,6 +4,7 @@ import { APIAdapter } from '../APIAdapter';
 import { logRoute } from '../decorators';
 import { IController } from '../interfaces/IController';
 import { Types } from '../Types';
+const camelcaseKeys = require('camelcase-keys');
 
 @injectable()
 export class GenericController implements IController<any> {
@@ -29,7 +30,7 @@ export class GenericController implements IController<any> {
         handler.name,
         req.body,
       );
-      return response.send(data);
+      return response.send(camelcaseKeys(data));
     } catch (e) {
       return response.status(400).send(e);
     }
