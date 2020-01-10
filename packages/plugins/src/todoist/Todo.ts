@@ -1,24 +1,26 @@
-import { api, EventSignature, Plugin } from '@workflows/core';
+import { api, IEventSignature, IPlugin, Logger } from '@workflows/core';
 
-export interface Task {
+export interface ITask {
   id: string;
   name: string;
   completed: boolean;
   priority: number;
 }
 
-@Plugin.register
-@Plugin.addEventSignature({
+@IPlugin.register
+@IPlugin.addEventSignature({
   requiredKeys: ['completed', 'priority'],
   name: Todo.name,
-} as EventSignature)
+} as IEventSignature)
 export class Todo {
-  load(): void {}
+  load(): void {
+    Logger.info('load from todo plugin');
+  }
 
-  async run(args: any): Promise<Task> {
-    console.log('executing event on todo plugin', args);
+  async run(args: any): Promise<ITask> {
+    Logger.info('executing event on todo plugin', args);
     try {
-      return await api<Task>({
+      return await api<ITask>({
         url: 'https://api.todoist.com/rest/v1/tasks',
         options: {
           headers: {
@@ -28,12 +30,12 @@ export class Todo {
         },
       });
     } catch (error) {
-      console.log(error);
+      Logger.error(error);
       throw Error(error);
     }
   }
 
   unload(): void {
-    console.log('unload from todo plugin');
+    Logger.info('unload from todo plugin');
   }
 }

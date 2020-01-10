@@ -11,6 +11,7 @@
     "@types/node-fetch": "^2.5.4",
     "events": "^3.0.0",
     "glob": "^7.1.6",
+    "inversify": "^5.0.1",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0"

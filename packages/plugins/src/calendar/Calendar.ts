@@ -1,25 +1,32 @@
-import { EventManager, EventSignature, Plugin } from '@workflows/core';
+import {
+  EventManager,
+  IEventSignature,
+  IPlugin,
+  Logger,
+} from '@workflows/core';
 import { Todo } from '../todoist/Todo';
 
-export interface Invite {
+export interface IInvite {
   id: string;
   name: string;
 }
 
-@Plugin.register
-@Plugin.addEventSignature({
+@IPlugin.register
+@IPlugin.addEventSignature({
   requiredKeys: ['id', 'name'],
   name: Calendar.name,
-} as EventSignature)
+} as IEventSignature)
 export class Calendar {
   load(): void {
-    console.log('load from calendar plugin');
-    EventManager.OnEvent(Todo.name, data => console.log(`Got ${JSON.stringify(data)}`));
+    Logger.info('load from calendar plugin');
+    EventManager.OnEvent(Todo.name, data =>
+      console.log(`Got ${JSON.stringify(data)}`),
+    );
   }
 
-  async run(args: any): Promise<Invite> {
-    console.log('run main function on calendar plugin', args);
-    const events: Invite[] = [
+  async run(args: any): Promise<IInvite> {
+    Logger.info('run main function on calendar plugin', args);
+    const events: IInvite[] = [
       {
         id: '1',
         name: 'Stand ups',
@@ -29,5 +36,7 @@ export class Calendar {
     return events[0];
   }
 
-  unload(): void {}
+  unload(): void {
+    Logger.info('unload from calendar plugin');
+  }
 }

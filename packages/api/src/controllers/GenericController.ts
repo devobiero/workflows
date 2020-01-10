@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { inject, injectable } from 'inversify';
 import { APIAdapter } from '../APIAdapter';
+import { logRoute } from '../decorators';
 import { IController } from '../interfaces/IController';
 import { Types } from '../Types';
 
@@ -20,6 +21,7 @@ export class GenericController implements IController<any> {
     this.router.post(this.path, this.run);
   }
 
+  @logRoute
   private async run(req: Request, response: Response) {
     try {
       const handler = await this.adapter.callService(req.body);

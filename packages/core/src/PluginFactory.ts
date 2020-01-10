@@ -1,7 +1,8 @@
-import { Plugin } from './MicroKernel';
+import { IPlugin } from './MicroKernel';
+import { Logger } from './shared/logger/Logger';
 
 export class PluginFactory<T> {
-  private plugins: Plugin<T>[] = [];
+  private plugins: IPlugin<T>[] = [];
 
   constructor(registeredPlugins: any) {
     PluginFactory.register(registeredPlugins);
@@ -12,24 +13,23 @@ export class PluginFactory<T> {
     Object.keys(plugins).forEach(() => {});
   }
 
-  public install(plugin: Plugin<T>) {
-    console.log(`Installing ${plugin.constructor.name} plugin`);
+  public install(plugin: IPlugin<T>) {
+    Logger.info(`Installing ${plugin.constructor.name} plugin`);
     this.plugins.push(plugin);
   }
 
-  public uninstall(plugin: Plugin<T>) {
+  public uninstall(plugin: IPlugin<T>) {
     this.plugins.splice(this.plugins.indexOf(plugin), 1);
   }
 
-  public getPlugins(): Plugin<T>[] {
+  public getPlugins(): IPlugin<T>[] {
     return this.plugins;
   }
 
   private discoverSync(): void {
-    const plugins = Plugin.GetImplementations();
-    for (let i = 0; i < plugins.length; i++) {
-      const panel = new plugins[i]();
-      this.install(panel);
+    const plugins = IPlugin.GetImplementations();
+    for (const plugin of plugins) {
+      this.install(new plugin());
     }
   }
 }

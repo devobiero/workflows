@@ -1,33 +1,33 @@
 import { EventEmitter } from 'events';
 import { capitalize } from './index';
 import { PluginFactory } from './PluginFactory';
+import { Logger } from './shared/logger';
 
-export interface EventSignature {
+export interface IEventSignature {
   requiredKeys: Array<string>;
   name: string;
 }
 
-export namespace Plugin {
+export namespace IPlugin {
   interface Constructor<T> {
     new (...args: any[]): T;
     readonly prototype: T;
   }
 
-  const implementations: Constructor<Plugin<any>>[] = [];
+  const implementations: Constructor<IPlugin<any>>[] = [];
   const types: Set<any> = new Set<any>();
 
-  export function GetImplementations(): Constructor<Plugin<any>>[] {
+  export function GetImplementations(): Constructor<IPlugin<any>>[] {
     return implementations;
   }
 
-  export function register<T extends Constructor<Plugin<any>>>(ctor: T) {
+  export function register<T extends Constructor<IPlugin<any>>>(ctor: T) {
     implementations.push(ctor);
     return ctor;
   }
 
   export function addEventSignature(type: any) {
-    // @ts-ignore
-    return function(target) {
+    return (_target: any): void => {
       // validate event keys, check if not unique
       types.add(type);
     };
@@ -53,7 +53,7 @@ export class EventManager {
   }
 
   /**
-   * Plugin can subscribe to events accordingly and execute the callback function passed
+   * IPlugin can subscribe to events accordingly and execute the callback function passed
    * @param eventName is required
    * @param callbackFunction is required
    * @constructor
@@ -68,10 +68,10 @@ export class EventManager {
 }
 
 export class PluginManager {
-  private plugin: Plugin<any>;
+  private plugin: IPlugin<any>;
   private kernel: MicroKernel;
 
-  constructor(kernel: MicroKernel, plugin: Plugin<any>) {
+  constructor(kernel: MicroKernel, plugin: IPlugin<any>) {
     this.kernel = kernel;
     this.plugin = plugin;
   }
@@ -84,7 +84,7 @@ export class PluginManager {
   }
 }
 
-export interface Plugin<T> {
+export interface IPlugin<T> {
   /**
    * handles any in-house stuff before making it active
    * e.g notifying users of it's existence, subscribing to events
@@ -102,20 +102,20 @@ export interface Plugin<T> {
  * the API adapter
  */
 export class MicroKernel {
-  private readonly plugins: Plugin<any>[];
+  private readonly plugins: IPlugin<any>[];
 
   constructor(factory: PluginFactory<any>) {
     this.plugins = this.subscribe(factory);
   }
 
-  getPlugins(): Plugin<any>[] {
+  getPlugins(): IPlugin<any>[] {
     return this.plugins;
   }
 
   // make list of plugins private field so that we
   // can only query once
-  subscribe(factory: PluginFactory<any>): Plugin<any>[] {
-    const plugins: Plugin<any>[] = factory.getPlugins();
+  subscribe(factory: PluginFactory<any>): IPlugin<any>[] {
+    const plugins: IPlugin<any>[] = factory.getPlugins();
 
     for (const plugin of plugins) {
       plugin.load();
@@ -135,8 +135,6 @@ export class MicroKernel {
     return undefined;
   }
 
-  createHandle(): void {}
-
   /**
    * The application core throws events.
    * so event listeners (plugins) can register on specific events without
@@ -148,6 +146,6 @@ export class MicroKernel {
 
   // call some of internal facing server/plugin e.g logger
   callInternalServer(args: any): void {
-    console.log('calling database server', args);
+    Logger.info('calling database server', args);
   }
 }

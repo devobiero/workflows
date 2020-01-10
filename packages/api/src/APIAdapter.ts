@@ -1,11 +1,11 @@
-import { MicroKernel, Plugin } from '@workflows/core';
+import { IPlugin, Logger, MicroKernel } from '@workflows/core';
 import { inject, injectable } from 'inversify';
 import _ from 'lodash';
-import { Adapter } from './interfaces/Adapter';
+import { IAdapter } from './interfaces/IAdapter';
 import { Types } from './Types';
 
 @injectable()
-export class APIAdapter implements Adapter {
+export class APIAdapter implements IAdapter {
   private kernel: MicroKernel;
 
   constructor(@inject(Types.Kernel) kernel: MicroKernel) {
@@ -13,10 +13,10 @@ export class APIAdapter implements Adapter {
   }
 
   async callService(event: any): Promise<any | undefined> {
-    const types = Plugin.GetTypes();
-    for (let i = 0; i < types.length; i++) {
-      const name = types[i].name;
-      const requiredKeys = types[i].eventKeys;
+    const types = IPlugin.GetTypes();
+    for (const signature of types) {
+      const name = signature.name;
+      const requiredKeys = signature.eventKeys;
       if (_.every(requiredKeys, _.partial(_.has, event))) {
         return {
           name,
@@ -24,7 +24,7 @@ export class APIAdapter implements Adapter {
         };
       }
     }
-    console.log(`No plugin manager found for ${JSON.stringify(event)}`);
+    Logger.info(`No plugin manager found for ${JSON.stringify(event)}`);
     return undefined;
   }
 }

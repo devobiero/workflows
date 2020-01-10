@@ -1,3 +1,4 @@
+import { Logger } from '@workflows/core';
 import bodyParser from 'body-parser';
 import express, { Express } from 'express';
 import * as http from 'http';
@@ -47,7 +48,7 @@ export default class ExpressServer implements IServer {
   start(): void {
     // Start the server instance
     this.server = this.app.listen(this.app.get('port'), () => {
-      console.info('Server is running on port ' + this.app.get('port'));
+      Logger.info('Server is running on port ' + this.app.get('port'));
     });
   }
 }
