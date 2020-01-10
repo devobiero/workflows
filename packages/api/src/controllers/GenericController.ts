@@ -21,15 +21,15 @@ export class GenericController implements IController<any> {
   }
 
   private async run(req: Request, response: Response) {
-    const handler = this.adapter.callService(req.body);
-    handler.receiver
-      ?.executeRequest(req.body)
-      .then((data: any) => {
-        this.adapter.emitEvent(handler.name, req);
-        return response.send(data);
-      })
-      .catch((err: string | undefined) => {
-        throw new Error(err);
-      });
+    try {
+      const handler = await this.adapter.callService(req.body);
+      const data = await handler.receiver?.executeRequest(
+        handler.name,
+        req.body,
+      );
+      return response.send(data);
+    } catch (e) {
+      return response.status(400).send(e);
+    }
   }
 }

@@ -52,12 +52,12 @@ export class EventManager {
     return EventManager.instance as EventEmitter;
   }
 
-  static subscribe(message: any, callback: () => void) {
+  static subscribe(message: any, callback: (...args: any[]) => void) {
     this.getInstance().on(message, callback);
   }
 
-  static publish(message: any) {
-    this.getInstance().emit(message);
+  static publish(message: any, args: any) {
+    this.getInstance().emit(message, args);
   }
 }
 
@@ -70,13 +70,12 @@ export class PluginManager {
     this.plugin = plugin;
   }
 
-  async executeRequest(request: any): Promise<any> {
+  async executeRequest(name: string, request: any): Promise<any> {
     // call other internal servers e.g loggers, database analytics
     this.kernel.callInternalServer(request);
+    this.kernel.sendMessage(name, request);
     return await this.plugin.run(request);
   }
-
-  receiveRequest(): void {}
 }
 
 export interface Plugin<T> {
@@ -132,8 +131,8 @@ export class MicroKernel {
    * so event listeners (plugins) can register on specific events without
    * having to listen to each single event thrown by the core.
    */
-  emit(data: string | symbol): void {
-    EventManager.getInstance().emit(data);
+  sendMessage(type: string | symbol, data: any): void {
+    EventManager.getInstance().emit(type, data);
   }
 
   // call some of internal facing server/plugin e.g logger

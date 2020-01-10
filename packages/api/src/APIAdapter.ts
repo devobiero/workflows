@@ -12,7 +12,7 @@ export class APIAdapter implements Adapter {
     this.kernel = kernel;
   }
 
-  callService(event: any): any | undefined {
+  async callService(event: any): Promise<any | undefined> {
     const types = Plugin.GetTypes();
     for (let i = 0; i < types.length; i++) {
       const name = types[i].name;
@@ -26,10 +26,5 @@ export class APIAdapter implements Adapter {
     }
     console.log(`No plugin manager found for ${JSON.stringify(event)}`);
     return undefined;
-  }
-
-  emitEvent(name: string, request: any) {
-    console.log(request);
-    this.kernel.emit(name);
   }
 }

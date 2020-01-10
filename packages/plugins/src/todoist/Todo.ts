@@ -1,10 +1,4 @@
-import {
-  api,
-  EventManager as _,
-  EventSignature,
-  Plugin,
-} from '@workflows/core';
-import { Service } from '../Types';
+import { api, EventSignature, Plugin } from '@workflows/core';
 
 export interface Task {
   id: string;
@@ -19,12 +13,7 @@ export interface Task {
   name: Todo.name,
 } as EventSignature)
 export class Todo {
-  load(): void {
-    console.log('load from todo plugin');
-    _.subscribe(Service.Calendar, () => {
-      console.log('Todo function from event');
-    });
-  }
+  load(): void {}
 
   async run(args: any): Promise<Task> {
     console.log('executing event on todo plugin', args);

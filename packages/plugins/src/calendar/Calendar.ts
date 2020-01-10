@@ -14,9 +14,7 @@ export interface Invite {
 export class Calendar {
   load(): void {
     console.log('load from calendar plugin');
-    _.subscribe(Todo.name, () => {
-      console.log('function from TODO event');
-    });
+    _.subscribe(Todo.name, data => console.log(`Got ${JSON.stringify(data)}`));
   }
 
   async run(args: any): Promise<Invite> {
