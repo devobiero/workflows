@@ -10,8 +10,8 @@ export interface ITask {
   url: string;
   due?: {
     recurring: string;
-    date: string
-  }
+    date: string;
+  };
 }
 
 @IPlugin.register

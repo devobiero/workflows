@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import _ from 'lodash';
 import { capitalize } from './index';
 import { PluginFactory } from './PluginFactory';
 import { Logger } from './shared/logger';
@@ -26,10 +27,25 @@ export namespace IPlugin {
     return ctor;
   }
 
-  export function addEventSignature(type: any) {
+  export function addEventSignature(pluginKey: IEventSignature) {
     return (_target: any): void => {
-      // validate event keys, check if not unique
-      types.add(type);
+      const keys = Object.values(pluginKey);
+      for (const item in keys) {
+        if (keys.hasOwnProperty(item) && _.isArray(keys[item])) {
+          const sign = keys[item];
+          for (const type of IPlugin.GetTypes()) {
+            if (_.isEqual(type.requiredKeys.sort(), sign.sort())) {
+              Logger.error(
+                `Plugin signatures are the same: ${JSON.stringify(
+                  pluginKey,
+                )}, ${JSON.stringify(type)}`,
+              );
+              throw Error('Plugins signatures cannot be the same');
+            }
+          }
+        }
+      }
+      types.add(pluginKey);
     };
   }
 
