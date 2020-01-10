@@ -52,12 +52,12 @@ export class EventManager {
     return EventManager.instance as EventEmitter;
   }
 
-  static subscribe(message: any, callback: (...args: any[]) => void) {
-    this.getInstance().on(message, callback);
+  static OnEvent(eventName: any, callbackFunction: (...args: any[]) => void) {
+    this.getInstance().on(eventName, callbackFunction);
   }
 
-  static publish(message: any, args: any) {
-    this.getInstance().emit(message, args);
+  static Publish(eventName: any, args: any) {
+    this.getInstance().emit(eventName, args);
   }
 }
 

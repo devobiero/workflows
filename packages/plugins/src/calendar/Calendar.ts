@@ -1,4 +1,4 @@
-import { EventManager as _, EventSignature, Plugin } from '@workflows/core';
+import { EventManager, EventSignature, Plugin } from '@workflows/core';
 import { Todo } from '../todoist/Todo';
 
 export interface Invite {
@@ -14,7 +14,7 @@ export interface Invite {
 export class Calendar {
   load(): void {
     console.log('load from calendar plugin');
-    _.subscribe(Todo.name, data => console.log(`Got ${JSON.stringify(data)}`));
+    EventManager.OnEvent(Todo.name, data => console.log(`Got ${JSON.stringify(data)}`));
   }
 
   async run(args: any): Promise<Invite> {
